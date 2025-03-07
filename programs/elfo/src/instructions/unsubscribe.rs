@@ -12,7 +12,7 @@ pub struct Unsubscribe<'info> {
         bump = subscription.bump,
         has_one = subscriber,
         has_one = subscription_plan,
-        constraint = subscription.has_aldready_been_initialized @ ErrorCode::SubscriptionNotInitialized,
+        constraint = subscription.has_already_been_initialized @ ErrorCode::SubscriptionNotInitialized,
         constraint = subscription.is_active @ ErrorCode::SubscriptionNotSubscribed,
     )]
     pub subscription: Box<Account<'info, Subscription>>,
@@ -21,13 +21,13 @@ pub struct Unsubscribe<'info> {
         mut,
         seeds = [b"state", who_subscribes.key().as_ref()],
         bump = subscriber.bump,
-        constraint = subscriber.has_aldready_been_initialized @ ErrorCode::SubscriberNotInitialized,
+        constraint = subscriber.has_already_been_initialized @ ErrorCode::SubscriberNotInitialized,
     )]
     pub subscriber: Box<Account<'info, Subscriber>>,
 
     #[account(
         mut,
-        constraint = subscription_plan.has_aldready_been_initialized @ ErrorCode::SubscriptionPlanNotInitialized,
+        constraint = subscription_plan.has_already_been_initialized @ ErrorCode::SubscriptionPlanNotInitialized,
     )]
     pub subscription_plan: Box<Account<'info, SubscriptionPlan>>,
 }
@@ -36,7 +36,7 @@ pub fn handler(ctx: Context<Unsubscribe>) -> Result<()> {
     let subscription = &mut ctx.accounts.subscription;
 
     subscription.is_active = false;
-    subscription.is_canceled = true;
+    subscription.is_cancelled = true;
 
     Ok(())
 }
