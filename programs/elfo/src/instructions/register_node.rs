@@ -34,7 +34,7 @@ pub struct RegisterNode<'info> {
         constraint = protocol_state.has_already_been_initialized
     )]
     pub protocol_state: Box<Account<'info, Protocol>>,
-    /// CHECK: authority is checked before changing payment wallet and mint account
+/// CHECK: This account will not be checked by anchor
     pub node_payment_wallet: UncheckedAccount<'info>,
 
     // #[account(address = mint::USDC @ ErrorCode::InvalidMint)] // remove on testing
